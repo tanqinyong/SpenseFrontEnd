@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View, Text, Image, useWindowDimensions,  StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 

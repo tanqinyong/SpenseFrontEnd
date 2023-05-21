@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
+import { View, Text, Image, useWindowDimensions, StyleSheet, Alert } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 
 import CustomInputPaper from '../../components/CustomInputPaper';
@@ -9,10 +10,26 @@ import CustomButton from '../../components/CustomButton';
 // value --> user input
 // setValue -->
 export default function SignUpScreen({navigation}) {
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [phone, setPhone] = useState('');
 
     const onCreateAccPressed = () => {
-        // logic goes here!
-        console.warn("Sign in");
+        console.warn("qinyong")
+        fetch('https://spense.azurewebsites.net/signUpRequest', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            email: email,
+            mobilePhone: phone
+        }),
+        });
     };
 
     const onAlreadyAccPressed = () => {
@@ -23,12 +40,11 @@ export default function SignUpScreen({navigation}) {
     return (
       <View style={styles.root}>
         <Text style={styles.title}>Create an account</Text>
-        <CustomInputPaper label="Email" />
-        <CustomInputPaper label="Username" />
-        <CustomInputPaper label="Phone" />
-        <CustomInputPaper label ="Password" secureTextEntry={true}/>
-        <CustomInputPaper label ="Repeat Password" secureTextEntry={true}/>
-
+        <TextInput style={styles.input} label="Email" onChangeText={newEmail => setEmail(newEmail)}/>
+        <TextInput style={styles.input} label="Username" onChangeText={newUsername => setUsername(newUsername)}/>
+        <TextInput style={styles.input} label="Phone" onChangeText={newPhone => setPhone(newPhone)}/>
+        <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)}/>
+        <TextInput style={styles.input} label="Repeat Password"/>
         <CustomButton text= "Create Account" onPress={onCreateAccPressed}/>
         <CustomButton text= "I already have an account." onPress={onAlreadyAccPressed} type= "TERTIARY"/>
       </View>
@@ -45,5 +61,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#00bf63',
         margin: 10,
-    }
+    },
+    input: {
+        backgroundColor: 'white',
+        width: '100%',
+        borderColor: '#e8e8e8',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+      },
 });
