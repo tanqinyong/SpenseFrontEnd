@@ -4,7 +4,7 @@ import { View, Text, Image, useWindowDimensions, TextInput, StyleSheet } from 'r
 // props: 
 // value --> user input
 // setValue -->
-export default function SignInScreen({value, setValue, placeholder, secureTextEntry}) {
+export default function CustomInput({value, setValue, placeholder, secureTextEntry}) {
     return (
       <View style={styles.container}>
         <TextInput 

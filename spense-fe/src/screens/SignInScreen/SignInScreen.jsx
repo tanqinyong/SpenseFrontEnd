@@ -3,6 +3,7 @@ import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native
 
 
 import CustomInput from '../../components/CustomInput';
+import CustomInputPaper from '../../components/CustomInputPaper';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/spense-logo1.png';
 
@@ -34,8 +35,11 @@ export default function SignInScreen() {
             resizeMode="contain" 
         />
 
-        <CustomInput placeholder="Username" value={username} setValue={setUsername} secureTextEntry={false}/>
-        <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/>
+        {/* <CustomInput placeholder="Username" value={username} setValue={setUsername} secureTextEntry={false}/>
+        <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
+
+        <CustomInputPaper label="Username" />
+        <CustomInputPaper label="Password" secureTextEntry={true} />
 
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
 
