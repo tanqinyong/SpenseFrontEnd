@@ -10,7 +10,7 @@ import Logo from '../../../assets/images/spense-logo1.png';
 
 //import { PaperProvider } from 'react-native-paper';
 
-export default function SignInScreen() {
+export default function SignInScreen({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -25,6 +25,12 @@ export default function SignInScreen() {
     const onForgotPasswordPressed = () => {
         console.warn("onForgotPasswordPressed");
     };
+
+    const onNoAccPressed = () => {
+        navigation.navigate('SignUp');
+        console.warn("onAlreadyAccPressed");
+    };
+
 
     return (
       <View style={styles.root}>
@@ -44,6 +50,8 @@ export default function SignInScreen() {
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
 
         <CustomButton text= "Forgot Password?" onPress={onForgotPasswordPressed} type= "TERTIARY"/>
+        <CustomButton text= "I don't have an account." onPress={onNoAccPressed} type= "TERTIARY"/>
+        
 
         { /* I will be trying ReactNative Paper buttons for the social media logins! */ } 
       </View>

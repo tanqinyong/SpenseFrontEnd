@@ -8,11 +8,16 @@ import CustomButton from '../../components/CustomButton';
 // props: 
 // value --> user input
 // setValue -->
-export default function SignUpScreen() {
+export default function SignUpScreen({navigation}) {
 
     const onCreateAccPressed = () => {
         // logic goes here!
         console.warn("Sign in");
+    };
+
+    const onAlreadyAccPressed = () => {
+        navigation.navigate('SignIn');
+        console.warn("onAlreadyAccPressed");
     };
 
     return (
@@ -25,6 +30,7 @@ export default function SignUpScreen() {
         <CustomInputPaper label ="Repeat Password" secureTextEntry={true}/>
 
         <CustomButton text= "Create Account" onPress={onCreateAccPressed}/>
+        <CustomButton text= "I already have an account." onPress={onAlreadyAccPressed} type= "TERTIARY"/>
       </View>
     );
 };
