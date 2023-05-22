@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 
 import CustomInput from '../../components/CustomInput';
@@ -19,7 +20,22 @@ export default function SignInScreen({navigation}) {
 
     const onSignInPressed = () => {
         // logic goes here!
-        console.warn("Sign in");
+        fetch('https://spense.azurewebsites.net/loginRequest', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+        })
+        .then(response=>response.json())
+        .then(data => data ? navigation.navigate('HomeScreen') : console.warn("Incorrect username or password."))
+        //.then(data=>console.log(data))
+        ;
+        //console.warn("Sign in");
     };
 
     const onForgotPasswordPressed = () => {
@@ -44,16 +60,17 @@ export default function SignInScreen({navigation}) {
         {/* <CustomInput placeholder="Username" value={username} setValue={setUsername} secureTextEntry={false}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
 
-        <CustomInputPaper label="Username" />
-        <CustomInputPaper label="Password" secureTextEntry={true} />
+        {/* <CustomInputPaper label="Username" />
+        <CustomInputPaper label="Password" secureTextEntry={true} /> */}
+
+        <TextInput style={styles.input} label="Username" onChangeText={newUsername => setUsername(newUsername)}/>
+        <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)}/>
 
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
 
         <CustomButton text= "Forgot Password?" onPress={onForgotPasswordPressed} type= "TERTIARY"/>
         <CustomButton text= "I don't have an account." onPress={onNoAccPressed} type= "TERTIARY"/>
         
-
-        { /* I will be trying ReactNative Paper buttons for the social media logins! */ } 
       </View>
     );
 };
@@ -68,4 +85,13 @@ const styles = StyleSheet.create({
         maxWidth: 300,
         height: 200,
     },
+    input: {
+        backgroundColor: 'white',
+        width: '100%',
+        borderColor: '#e8e8e8',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+      },
 });
