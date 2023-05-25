@@ -7,7 +7,7 @@ This README documentation is specifically for the frontend. To view the backend 
 
 We currently have 3 screens for our technical proof of concept. Namely, the login, signup and home screen.
 
-```react
+```html
         <Stack.Screen name="SignIn" component={SignInScreen}/>
         <Stack.Screen name="SignUp" component={SignUpScreen}/>
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
