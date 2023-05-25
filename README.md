@@ -5,7 +5,7 @@ This README documentation is specifically for the frontend. To view the backend 
 
 ## Usage
 
-We currently have 3 screens for our technical proof of concept. Namely, the login, signup and home screen.
+We currently have 3 screens for our technical proof of concept. Namely, the signin, signup and home screen.
 
 ```html
         <Stack.Screen name="SignIn" component={SignInScreen}/>
