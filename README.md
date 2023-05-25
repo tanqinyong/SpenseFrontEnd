@@ -5,12 +5,12 @@ This README documentation is specifically for the frontend. To view the backend 
 
 ## Usage
 
-```java
-import Spense
+We currently have 3 screens for our technical proof of concept. Namely, the login, signup and home screen.
 
-# returns 'words'
-foobar.pluralize('word')
-
+```react
+        <Stack.Screen name="SignIn" component={SignInScreen}/>
+        <Stack.Screen name="SignUp" component={SignUpScreen}/>
+        <Stack.Screen name="HomeScreen" component={HomeScreen}/>
 ```
 
 ## Contributing
