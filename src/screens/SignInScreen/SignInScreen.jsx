@@ -32,7 +32,7 @@ export default function SignInScreen({navigation}) {
             }),
         })
         .then(response=>response.json())
-        .then(data => data ? navigation.navigate('HomeScreen') : console.warn("Incorrect username or password."))
+        .then(data => data ? navigation.navigate('HomeScreen') : alert("Incorrect username or password."))
         //.then(data=>console.log(data))
         ;
         //console.warn("Sign in");
