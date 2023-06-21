@@ -20,6 +20,7 @@ export default function SignInScreen({navigation}) {
 
     const onSignInPressed = () => {
         // logic goes here!
+        var responseClone; // 1
         fetch('https://spense.azurewebsites.net/loginRequest', {
             method: 'POST',
             headers: {
@@ -31,10 +32,27 @@ export default function SignInScreen({navigation}) {
                 password: password,
             }),
         })
-        .then(response=>response.json())
-        .then(data => data ? navigation.navigate('HomeScreen') : alert("Incorrect username or password."))
+        .then(function (response) {
+            responseClone = response.clone(); // 2
+            return response.json();
+        })
+        .then(function (data) {
+            if (data) {
+                navigation.navigate('HomeScreen');
+            } else {
+                alert("Incorrect username or password.");
+            }
+        }, function (rejectionReason) { // 3
+            console.log('Error parsing JSON from response:', rejectionReason, responseClone); // 4
+            responseClone.text() // 5
+            .then(function (bodyText) {
+                console.log('Received the following instead of valid JSON:', bodyText); // 6
+            });
+        });
+
+        // .then(response => response.json())
+        // .then(data => data ? navigation.navigate('HomeScreen') : alert("Incorrect username or password."));
         //.then(data=>console.log(data))
-        ;
         //console.warn("Sign in");
     };
 
@@ -67,7 +85,6 @@ export default function SignInScreen({navigation}) {
         <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)}/>
 
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
-
         <CustomButton text= "Forgot Password?" onPress={onForgotPasswordPressed} type= "TERTIARY"/>
         <CustomButton text= "I don't have an account." onPress={onNoAccPressed} type= "TERTIARY"/>
         
