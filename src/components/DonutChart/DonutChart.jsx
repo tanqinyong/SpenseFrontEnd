@@ -41,7 +41,7 @@ const DonutChart = () => {
           </G>
         </Svg>
         {/* <Text style={styles.text}>{spentAmount}€</Text> */}
-        <Text style = { styles.text}>$1607.18</Text>
+        {/* <Text style = { styles.text}>$1607.18</Text> */}
       </View>
     </View>
   );

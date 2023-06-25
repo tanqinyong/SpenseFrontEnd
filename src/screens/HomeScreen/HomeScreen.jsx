@@ -1,61 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, Image, useWindowDimensions, TextInput, StyleSheet, FlatList } from 'react-native';
 import { Title } from 'react-native-paper';
 
 import DonutChart from '../../components/DonutChart';
 
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Clothing',
-    price: '$24.00',
-    time: '23/07/2023'
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Food',
-    price: '$5.70',
-    time: '20/06/2023'
-  },
-  {
-    id: '58694a9f-3da1-471f-bd96-145571e29d72',
-    title: 'Electronics',
-    price: '$88',
-    time: '12/07/2023'
-  },
-  {
-    id: '58694a8f-3da1-471f-bd96-145571e29d72',
-    title: 'Furniture',
-    price: '$240',
-    time: '23/07/2023'
-  },
-  {
-    id: '58694a7f-3da1-471f-bd96-145571e29d72',
-    title: 'Fifth Receipt',
-    price: '$69',
-    time: '23/07/2023'
-  },
-  {
-    id: '58694a6f-3da1-471f-bd96-145571e29d72',
-    title: 'Sixth Receipt',
-    price: '$420',
-    time: '23/07/2023'
-  },
-];
-
-const Item = ({title, price, time}) => (
-  <View style={styles.item}>
-    <Text style={styles.flatTitle}>{title}</Text>
-    <Text>Time: {time}</Text>
-    <Text>Paid: {price}</Text>
-  </View>
-);
-
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 const d = new Date();
 let currMonth = months[d.getMonth()];
+
 
 // props: 
 // value --> user input
@@ -65,9 +18,67 @@ export default function HomeScreen({ route, navigation }) {
   // get the params
   const { user } = route.params;
   console.log("ID: " + user.id);
+  const [receiptJSON, setReceiptJSON] = useState(null);
+  const [totalSpent, setTotalSpent] = useState(0);
 
   // fetch top six receipts based on user
+  useEffect(() => {
+    const viewUserReceipts = () => {
+      fetch('https://spense.azurewebsites.net/getUserReceipt', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: user.id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setReceiptJSON(data);
+          calculateTotalSpent(data); // Calculate total spent
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
 
+    viewUserReceipts();
+  }, [user.id]);
+
+  // Calculate total spent per month
+  const calculateTotalSpent = (receipts) => {
+    let total = 0;
+    // Get the current month
+    const currentMonth = new Date().getMonth();
+
+    // Iterate over receipts and sum the amounts for the current month
+    receipts.forEach((receipt) => {
+      const receiptDate = new Date(receipt.date * 1000);
+      if (receiptDate.getMonth() === currentMonth) {
+        total += receipt.price;
+      }
+    });
+
+    setTotalSpent(total);
+  };
+  
+
+  const Item = ({ id, price, date, paymentMethod, businessName, items }) => {
+    const formattedDate = useMemo(() => {
+      const dateTime = new Date(date * 1000).toLocaleString();
+      return dateTime;
+    }, [date]);
+  
+    return (
+      <View style={styles.item}>
+        <Text style={styles.flatTitle}>{businessName}</Text>
+        <Text>Time: {formattedDate}</Text>
+        <Text>Paid: {price}</Text>
+      </View>
+    );
+  };
 
     return (
       <View style={styles.container}>
@@ -75,15 +86,15 @@ export default function HomeScreen({ route, navigation }) {
           <Title style={styles.title}> Welcome back,</Title>
           <Title style={styles.name}> {user.username} </Title>
           <Text style={styles.whitetext}> {currMonth} Overview: </Text>
-          <Text style={styles.whitetext}> $1607.18 </Text>
+          <Text style={styles.whitetext}> ${totalSpent} </Text>
           <DonutChart style={styles.donutChart} />
         </View>
         <View style={styles.receiptsContainer}>
           <Text style={styles.latestReceipts}> Latest Receipts </Text>
           <FlatList 
-            data={DATA}
+            data={receiptJSON}
             horizontal={false}
-            renderItem={({item}) => <Item title={item.title} price={item.price} time={item.time}/>}
+            renderItem={({item}) => <Item businessName={item.businessName} price={item.price} date={item.date}/>}
             keyExtractor={item => item.id}
           />
         </View>
