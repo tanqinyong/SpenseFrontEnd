@@ -86,6 +86,11 @@ export default function SignInScreen({navigation}) {
         console.warn("onAlreadyAccPressed");
     };
 
+    const onCreateReceiptPagePressed = () => {
+        navigation.navigate('CreateReceiptScreen');
+        console.warn("onAlreadyAccPressed");
+    };
+
 
     return (
       <View style={styles.root}>
@@ -112,6 +117,10 @@ export default function SignInScreen({navigation}) {
             {/* Rest of the app comes ABOVE the action button component !*/}
             <ActionButton buttonColor="rgba(0, 191, 99, 1)">
             <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
+                <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
+            </ActionButton.Item>
+
+            <ActionButton.Item buttonColor='#9b59b6' title="Create Receipt" onPress={onCreateReceiptPagePressed}>
                 <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
             </ActionButton.Item>
             </ActionButton>
