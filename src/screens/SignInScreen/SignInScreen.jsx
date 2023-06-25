@@ -9,46 +9,20 @@ import Logo from '../../../assets/images/spense-logo1.png';
 import ActionButton from 'react-native-action-button';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import NfcManager, {NfcTech} from 'react-native-nfc-manager';
+import {AsyncStorage} from 'react-native';
+
+
 
 
 
 //import { PaperProvider } from 'react-native-paper';
 
 export default function SignInScreen({navigation}) {
-    NfcManager.start();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     // ensure height is relative to phone window dimensions
     const {height} = useWindowDimensions();
-
-    const checkIsSupported = async () => {
-        const deviceIsSupported = await NfcManager.isSupported()
-        alert("s")
-  
-        setHasNFC(deviceIsSupported)
-        if (deviceIsSupported) {
-          await NfcManager.start()
-        }
-      }
-
-    async function readNdef() {
-        try {
-          // register for the NFC tag with NDEF in it
-          await NfcManager.requestTechnology(NfcTech.Ndef);
-          // the resolved tag object will contain `ndefMessage` property
-          const tag = await NfcManager.getTag();
-          console.warn('Tag found', tag);
-        } catch (ex) {
-          console.warn('Oops!', ex);
-          alert("Error"+ex)
-        } finally {
-          // stop the nfc scanning
-          NfcManager.cancelTechnologyRequest();
-          alert("End")
-        }
-    }
 
     const onSignInPressed = () => {
         // logic goes here!
@@ -72,6 +46,16 @@ export default function SignInScreen({navigation}) {
             if (!data || data.length === 0) {
                 alert("Incorrect username or password.");
             } else {
+                _storeData = async () => {
+                try {
+                  await AsyncStorage.setItem(
+                    '@MySuperStore:key',
+                    'I like to save it.',
+                  );
+                } catch (error) {
+                  // Error saving data
+                }
+              };
                 navigation.navigate('HomeScreen', {
                     user: JSON.parse(data)
                 });
@@ -127,7 +111,7 @@ export default function SignInScreen({navigation}) {
         <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
             {/* Rest of the app comes ABOVE the action button component !*/}
             <ActionButton buttonColor="rgba(0, 191, 99, 1)">
-            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => readNdef()}>
+            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
                 <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
             </ActionButton.Item>
             </ActionButton>
