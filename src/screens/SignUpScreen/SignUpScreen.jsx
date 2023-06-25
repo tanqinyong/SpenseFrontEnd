@@ -14,9 +14,9 @@ export default function SignUpScreen({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
+    const [businessMode, setBusinessMode] = useState('0');
 
     const onCreateAccPressed = () => {
-        console.warn("qinyong")
         fetch('https://spense.azurewebsites.net/signUpRequest', {
         method: 'POST',
         headers: {
@@ -27,9 +27,30 @@ export default function SignUpScreen({navigation}) {
             username: username,
             password: password,
             email: email,
-            mobilePhone: phone
+            mobilePhone: phone,
+            businessMode: businessMode
         }),
-        });
+        })
+        .then(function (response) {
+            responseClone = response.clone(); // 2
+            return response.text();
+        })
+        .then(function (data) {
+            alert("Account Created!");
+            console.log("Account Created!");
+        } 
+        // , function (rejectionReason) { // 3
+        //     console.log('Error parsing JSON from response:', rejectionReason, responseClone); // 4
+        //     responseClone.text() // 5
+        //     .then(function (bodyText) {
+        //         console.log('Received the following instead of valid JSON:', bodyText); // 6
+        //     });
+        // }
+        );
+
+        // .then(response => response.json())
+        // .then(data=>console.log(data))
+        // .then(console.warn("Account Created"));
     };
 
     const onAlreadyAccPressed = () => {

@@ -14,8 +14,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {/* routes */}
-        <Stack.Screen name="HomeScreen" component={HomeScreen}/>
         <Stack.Screen name="SignIn" component={SignInScreen}/>
+        <Stack.Screen name="HomeScreen" component={HomeScreen}/>
         <Stack.Screen name="SignUp" component={SignUpScreen}/>
         
       </Stack.Navigator>

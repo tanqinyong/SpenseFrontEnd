@@ -52,16 +52,29 @@ const Item = ({title, price, time}) => (
   </View>
 );
 
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const d = new Date();
+let currMonth = months[d.getMonth()];
+
 // props: 
 // value --> user input
 // setValue -->
-export default function HomeScreen() {
+export default function HomeScreen({ route, navigation }) {
+
+  // get the params
+  const { user } = route.params;
+  console.log("ID: " + user.id);
+
+  // fetch top six receipts based on user
+
+
     return (
       <View style={styles.container}>
         <View style={styles.donutContainer}>
           <Title style={styles.title}> Welcome back,</Title>
-          <Title style={styles.name}> Jasper </Title>
-          <Text style={styles.whitetext}> June Overview: </Text>
+          <Title style={styles.name}> {user.username} </Title>
+          <Text style={styles.whitetext}> {currMonth} Overview: </Text>
           <Text style={styles.whitetext}> $1607.18 </Text>
           <DonutChart style={styles.donutChart} />
         </View>

@@ -34,21 +34,26 @@ export default function SignInScreen({navigation}) {
         })
         .then(function (response) {
             responseClone = response.clone(); // 2
-            return response.json();
+            return response.text();
         })
         .then(function (data) {
-            if (data) {
-                navigation.navigate('HomeScreen');
-            } else {
+            if (!data || data.length === 0) {
                 alert("Incorrect username or password.");
+            } else {
+                navigation.navigate('HomeScreen', {
+                    user: JSON.parse(data)
+                });
+                console.warn(data);
             }
-        }, function (rejectionReason) { // 3
-            console.log('Error parsing JSON from response:', rejectionReason, responseClone); // 4
-            responseClone.text() // 5
-            .then(function (bodyText) {
-                console.log('Received the following instead of valid JSON:', bodyText); // 6
-            });
-        });
+        }
+        // , function (rejectionReason) { // 3
+        //     console.log('Error parsing JSON from response:', rejectionReason, responseClone); // 4
+        //     responseClone.text() // 5
+        //     .then(function (bodyText) {
+        //         console.log('Received the following instead of valid JSON:', bodyText); // 6
+        //     });
+        // }
+        );
 
         // .then(response => response.json())
         // .then(data => data ? navigation.navigate('HomeScreen') : alert("Incorrect username or password."));
