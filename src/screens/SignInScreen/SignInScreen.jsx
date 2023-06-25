@@ -96,7 +96,11 @@ export default function SignInScreen({navigation}) {
             style={[styles.logo, {height: height * 0.3}]} 
             resizeMode="contain" 
         />
-
+        
+        <Text>Demo Account:</Text>
+        <Text>Username: tqy4</Text>
+        <Text>Password: password</Text>
+        
         {/* <CustomInput placeholder="Username" value={username} setValue={setUsername} secureTextEntry={false}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
 
@@ -109,18 +113,6 @@ export default function SignInScreen({navigation}) {
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
         <CustomButton text= "Forgot Password?" onPress={onForgotPasswordPressed} type= "TERTIARY"/>
         <CustomButton text= "I don't have an account." onPress={onNoAccPressed} type= "TERTIARY"/>
-        <View style={{flex:1, backgroundColor: '#f3f3f3'}}>
-            {/* Rest of the app comes ABOVE the action button component !*/}
-            <ActionButton buttonColor="rgba(0, 191, 99, 1)">
-            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
-                <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
-            </ActionButton.Item>
-
-            <ActionButton.Item buttonColor='#9b59b6' title="Create Receipt" onPress={onCreateReceiptPagePressed}>
-                <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
-            </ActionButton.Item>
-            </ActionButton>
-        </View>
       </View>
     );
 };

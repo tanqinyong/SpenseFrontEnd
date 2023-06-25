@@ -84,6 +84,12 @@ export default function HomeScreen({ route, navigation }) {
 
     setTotalSpent(total);
   };
+
+  const onCreateReceiptPagePressed = () => {
+    navigation.navigate('CreateReceiptScreen');
+    console.warn("onAlreadyAccPressed");
+};
+
   
 
   const Item = ({ id, price, date, paymentMethod, businessName, items }) => {
@@ -120,15 +126,18 @@ export default function HomeScreen({ route, navigation }) {
           />
         </View>
             <ActionButton buttonColor="rgba(155, 89, 182, 1)">
-            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
-                <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalVisible(true)}>
-                <MaterialCommunityIcons name="qrcode" style={stylesFloatButton.actionButtonIcon} />
-            </ActionButton.Item>
-            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalQRVisible(true)}>
-                <MaterialCommunityIcons name="qrcode-scan" style={stylesFloatButton.actionButtonIcon} />
-            </ActionButton.Item>
+              <ActionButton.Item buttonColor='#9b59b6' title="Create Receipt" onPress={onCreateReceiptPagePressed}>
+                  <MaterialCommunityIcons name="add-circle-outline" style={stylesFloatButton.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
+                  <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalVisible(true)}>
+                  <MaterialCommunityIcons name="qrcode" style={stylesFloatButton.actionButtonIcon} />
+              </ActionButton.Item>
+              <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalQRVisible(true)}>
+                  <MaterialCommunityIcons name="qrcode-scan" style={stylesFloatButton.actionButtonIcon} />
+              </ActionButton.Item>
             </ActionButton>
             <Modal
               animationType="slide"
