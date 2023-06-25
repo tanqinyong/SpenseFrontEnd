@@ -108,7 +108,7 @@ export default function SignInScreen({navigation}) {
         <CustomInputPaper label="Password" secureTextEntry={true} /> */}
 
         <TextInput style={styles.input} label="Username" onChangeText={newUsername => setUsername(newUsername)}/>
-        <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)}/>
+        <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)} secureTextEntry={true}/>
 
         <CustomButton text= "Sign In" onPress={onSignInPressed}/>
         <CustomButton text= "Forgot Password?" onPress={onForgotPasswordPressed} type= "TERTIARY"/>
