@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, Image, Button, Modal, useWindowDimensions, TextInput, StyleSheet, FlatList } from 'react-native';
-import { View, Text, Image, useWindowDimensions, TextInput, StyleSheet, FlatList } from 'react-native';
 import { Title } from 'react-native-paper';
 import CustomQR from '../../components/CustomQR';
 import AsyncStorage from '@react-native-async-storage/async-storage';
