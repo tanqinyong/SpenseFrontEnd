@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "spense-fe",
+    "plugins": ["react-native-nfc-manager"],
     "slug": "spense-fe",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    
     "assetBundlePatterns": [
       "**/*"
     ],
