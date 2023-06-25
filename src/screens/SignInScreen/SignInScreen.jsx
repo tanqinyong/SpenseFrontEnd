@@ -1,19 +1,13 @@
 import React, {useState} from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
-
 import CustomInput from '../../components/CustomInput';
 import CustomInputPaper from '../../components/CustomInputPaper';
 import CustomButton from '../../components/CustomButton';
 import Logo from '../../../assets/images/spense-logo1.png';
 import ActionButton from 'react-native-action-button';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import {AsyncStorage} from 'react-native';
-
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //import { PaperProvider } from 'react-native-paper';
 
@@ -25,8 +19,7 @@ export default function SignInScreen({navigation}) {
     const {height} = useWindowDimensions();
 
     const onSignInPressed = () => {
-        // logic goes here!
-        var responseClone; // 1
+        var responseClone; 
         fetch('https://spense.azurewebsites.net/loginRequest', {
             method: 'POST',
             headers: {
@@ -46,20 +39,11 @@ export default function SignInScreen({navigation}) {
             if (!data || data.length === 0) {
                 alert("Incorrect username or password.");
             } else {
-                _storeData = async () => {
-                try {
-                  await AsyncStorage.setItem(
-                    '@MySuperStore:key',
-                    'I like to save it.',
-                  );
-                } catch (error) {
-                  // Error saving data
-                }
-              };
+                storeData("userSession", data);
                 navigation.navigate('HomeScreen', {
                     user: JSON.parse(data)
                 });
-                console.warn(data);
+                console.log(data);
             }
         }
         // , function (rejectionReason) { // 3
@@ -77,13 +61,25 @@ export default function SignInScreen({navigation}) {
         //console.warn("Sign in");
     };
 
+    async function storeData(key, value) {
+        try {
+          const d = JSON.parse(value)
+          console.log('storing this')
+          console.log(d.id)
+          await AsyncStorage.setItem(key, d.id.toString());
+          console.log('Data stored successfully');
+        } catch (error) {
+          console.log('Error storing data:', error);
+        }
+      }
+
     const onForgotPasswordPressed = () => {
-        console.warn("onForgotPasswordPressed");
+        console.log("onForgotPasswordPressed");
     };
 
     const onNoAccPressed = () => {
         navigation.navigate('SignUp');
-        console.warn("onAlreadyAccPressed");
+        console.log("onAlreadyAccPressed");
     };
 
 

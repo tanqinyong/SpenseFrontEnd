@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, Text, Image, useWindowDimensions, TextInput, StyleSheet, FlatList } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, Image, Button, Modal, useWindowDimensions, TextInput, StyleSheet, FlatList } from 'react-native';
 import { Title } from 'react-native-paper';
-
+import CustomQR from '../../components/CustomQR';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DonutChart from '../../components/DonutChart';
-
+import ActionButton from 'react-native-action-button';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import QRCode from 'react-native-qrcode-svg';
 
 const DATA = [
   {
@@ -61,13 +64,26 @@ let currMonth = months[d.getMonth()];
 // value --> user input
 // setValue -->
 export default function HomeScreen({ route, navigation }) {
+  const [modalVisible, setModalVisible] = useState(false);  
+  const [modalQRVisible, setModalQRVisible] = useState(false);  
+  const [userData, setData] = useState('');
 
   // get the params
   const { user } = route.params;
-  console.log("ID: " + user.id);
-
-  // fetch top six receipts based on user
-
+  console.log("ID: " + user.id); 
+  async function getData() {
+    try {
+      const value = await AsyncStorage.getItem("userSession");
+      if (value !== null) {
+        setData(value)
+      } else {
+        console.log('Data not found');
+      }
+    } catch (error) {
+      console.log('Error retrieving data:', error);
+    }
+  }
+  getData();
 
     return (
       <View style={styles.container}>
@@ -87,9 +103,81 @@ export default function HomeScreen({ route, navigation }) {
             keyExtractor={item => item.id}
           />
         </View>
+            <ActionButton buttonColor="rgba(155, 89, 182, 1)">
+            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => alert()}>
+                <MaterialCommunityIcons name="cellphone-nfc" style={stylesFloatButton.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalVisible(true)}>
+                <MaterialCommunityIcons name="qrcode" style={stylesFloatButton.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#9b59b6' title="NFC Demoo1" onPress={() => setModalQRVisible(true)}>
+                <MaterialCommunityIcons name="qrcode-scan" style={stylesFloatButton.actionButtonIcon} />
+            </ActionButton.Item>
+            </ActionButton>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={stylesPopUp.modalContainer}>
+                <View style={stylesPopUp.modalContent}>
+                  <QRCode value={userData} size={200} />
+                  <Button
+                    title="Close"
+                    onPress={() => setModalVisible(false)}
+                  />
+                </View>
+              </View>
+            </Modal>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalQRVisible}
+              onRequestClose={() => setModalQRVisible(false)}
+            >
+              <View style={stylesPopUp.modalContainer}>
+                <View style={stylesPopUp.modalContent}>
+                  <CustomQR />
+                  <Button
+                    title="Close"
+                    onPress={() => setModalQRVisible(false)}
+                  />
+                </View>
+              </View>
+            </Modal>
       </View>
     );
 };
+
+const stylesPopUp = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+});
+
+const stylesFloatButton = StyleSheet.create({
+    actionButtonIcon: {
+      fontSize: 20,
+      height: 22,
+      color: 'white',
+      position: 'absolute'
+    },
+  });
 
 const styles = StyleSheet.create({
     container: {
