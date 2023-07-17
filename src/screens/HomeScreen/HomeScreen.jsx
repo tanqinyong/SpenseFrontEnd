@@ -9,7 +9,6 @@ import ActionButton from 'react-native-action-button';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import QRCode from 'react-native-qrcode-svg';
 const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
 const d = new Date();
 let currMonth = months[d.getMonth()];
 
@@ -23,6 +22,8 @@ export default function HomeScreen({ route, navigation }) {
   const [userData, setData] = useState('');
 
   // get the params
+  // receiptJSON - stores the receipt object
+  // totalSpent - stores the total amount spent for the month
   const { user } = route.params;
   console.log("ID: " + user.id); 
   async function getData() {
@@ -55,18 +56,21 @@ export default function HomeScreen({ route, navigation }) {
           id: user.id,
         }),
       })
-        .then((response) => response.json())
+        .then((response) => {
+          return response.json();
+        })
         .then((data) => {
           setReceiptJSON(data);
           calculateTotalSpent(data); // Calculate total spent
         })
         .catch((error) => {
-          console.error(error);
+          console.error(error + " login err");
         });
     };
 
     viewUserReceipts();
   }, [user.id]);
+
 
   // Calculate total spent per month
   const calculateTotalSpent = (receipts) => {
@@ -89,6 +93,16 @@ export default function HomeScreen({ route, navigation }) {
     navigation.navigate('CreateReceiptScreen');
     console.warn("onAlreadyAccPressed");
 };
+
+  
+
+  // Sort the receipts array by date in descending order
+  const sortedReceipts = useMemo(() => {
+    if (receiptJSON) {
+      return [...receiptJSON].sort((a, b) => b.date - a.date);
+    }
+    return [];
+  }, [receiptJSON]);
 
   
 
@@ -119,7 +133,7 @@ export default function HomeScreen({ route, navigation }) {
         <View style={styles.receiptsContainer}>
           <Text style={styles.latestReceipts}> Latest Receipts </Text>
           <FlatList 
-            data={receiptJSON}
+            data={sortedReceipts}
             horizontal={false}
             renderItem={({item}) => <Item businessName={item.businessName} price={item.price} date={item.date}/>}
             keyExtractor={item => item.id}

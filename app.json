@@ -17,28 +17,30 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jaspertzx.spensefe"
+      "bundleIdentifier": "com.tanqinyong.spensefe"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jaspertzx.spensefe"
+      "package": "com.tanqinyong.spensefe"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "fe9f93b8-3b17-40a8-9daa-469b99b6a72e"
+        "projectId": "676ec984-b3dc-4d71-8a08-988f6491e207"
       }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/fe9f93b8-3b17-40a8-9daa-469b99b6a72e"
-    }
+      "url": "https://u.expo.dev/676ec984-b3dc-4d71-8a08-988f6491e207"
+    },
+    "owner": "tanqinyong"
+    
   }
 }
