@@ -16,6 +16,7 @@ export default function CreateReceiptScreen({navigation}) {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [staffName, setStaffName] = useState('');
     const [businessId, setBusinessId] = useState('0');
+    const [category, setCategory] = useState('');
 
     const [itemName, setItemName] = useState('');
     const [itemPrice, setItemPrice] = useState('0');
@@ -54,6 +55,7 @@ export default function CreateReceiptScreen({navigation}) {
               "discount": discount,
               "paymentMethod": paymentMethod,
               "staffName": staffName,
+              "category": category,
               "business": {
                   "id": 1,
                   "businessName": "Business 1"
@@ -106,6 +108,7 @@ export default function CreateReceiptScreen({navigation}) {
         <TextInput style={styles.input} label="Item Price" onChangeText={newItemPrice => setItemPrice(newItemPrice)}/>
         <TextInput style={styles.input} label="Item Quantity" onChangeText={newItemQuantity => setItemQuantity(newItemQuantity)}/>
         <TextInput style={styles.input} label="User ID/Email" onChangeText={newUserID => setUserID(newUserID)}/>
+        <TextInput style={styles.input} label="Category" onChangeText={newCategory => setCategory(newCategory)}/>
         <CustomButton text= "Create Receipt" onPress={onCreateReceiptPressed}/>
       </View>
     );

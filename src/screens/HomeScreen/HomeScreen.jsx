@@ -43,6 +43,11 @@ export default function HomeScreen({ route, navigation }) {
   const [receiptJSON, setReceiptJSON] = useState(null);
   const [totalSpent, setTotalSpent] = useState(0);
 
+  const [foodPercent, setFoodPercent] = useState(0.0);
+  const [transportPercent, setTransportPercent] = useState(0.0);
+  const [techPercent, setTechPercent] = useState(0.0);
+  const [miscPercent, setMiscPercent] = useState(0.0);
+
   // fetch top six receipts based on user
   useEffect(() => {
     const viewUserReceipts = () => {
@@ -60,6 +65,7 @@ export default function HomeScreen({ route, navigation }) {
           return response.json();
         })
         .then((data) => {
+          calculateCategory(data);
           setReceiptJSON(data);
           calculateTotalSpent(data); // Calculate total spent
         })
@@ -72,22 +78,58 @@ export default function HomeScreen({ route, navigation }) {
   }, [user.id]);
 
 
-  // Calculate total spent per month
-  const calculateTotalSpent = (receipts) => {
-    let total = 0;
-    // Get the current month
-    const currentMonth = new Date().getMonth();
+  // Calculate category percent
+  const calculateCategory = (receipts) => {
+    let foodCount = 0;
+    let techCount = 0;
+    let transportCount = 0;
+    let miscCount = 0;
+    let totalCount = 0;
 
-    // Iterate over receipts and sum the amounts for the current month
+    // Iterate over receipts and count each category
     receipts.forEach((receipt) => {
-      const receiptDate = new Date(receipt.date * 1000);
-      if (receiptDate.getMonth() === currentMonth) {
-        total += receipt.price;
+      const receiptCat = receipt.category;
+
+      if (receiptCat == "Food") {
+        foodCount++;
+      } else if (receiptCat == "Transport") {
+        transportCount++;
+      } else if (receiptCat == "Tech") {
+        techCount++;
+      } else {
+        miscCount++;
       }
+      totalCount++;
     });
 
-    setTotalSpent(total);
+    // calculate percentages
+    setFoodPercent((foodCount/totalCount)*100); // say around 10%
+    setTransportPercent((transportCount/totalCount)*100); // say around 20%
+    setTechPercent((techCount/totalCount)*100); // say around 5%
+    setMiscPercent((miscCount/totalCount)*100); // say around 65%
+
+    console.log(foodPercent);
+    console.log(transportPercent);
+    console.log(techPercent);
+    console.log(miscPercent);
   };
+
+    // Calculate total spent per month
+    const calculateTotalSpent = (receipts) => {
+      let total = 0;
+      // Get the current month
+      const currentMonth = new Date().getMonth();
+  
+      // Iterate over receipts and sum the amounts for the current month
+      receipts.forEach((receipt) => {
+        const receiptDate = new Date(receipt.date * 1000);
+        if (receiptDate.getMonth() === currentMonth) {
+          total += receipt.price;
+        }
+      });
+  
+      setTotalSpent(total);
+    };
 
   const onCreateReceiptPagePressed = () => {
     navigation.navigate('CreateReceiptScreen');
@@ -106,7 +148,7 @@ export default function HomeScreen({ route, navigation }) {
 
   
 
-  const Item = ({ id, price, date, paymentMethod, businessName, items }) => {
+  const Item = ({ id, price, date, paymentMethod, businessName, items, category }) => {
     const formattedDate = useMemo(() => {
       const dateTime = new Date(date * 1000).toLocaleString();
       return dateTime;
@@ -117,6 +159,7 @@ export default function HomeScreen({ route, navigation }) {
         <Text style={styles.flatTitle}>{businessName}</Text>
         <Text>Time: {formattedDate}</Text>
         <Text>Paid: {price}</Text>
+        <Text>Category: {category}</Text>
       </View>
     );
   };
@@ -126,16 +169,24 @@ export default function HomeScreen({ route, navigation }) {
         <View style={styles.donutContainer}>
           <Title style={styles.title}> Welcome back,</Title>
           <Title style={styles.name}> {user.username} </Title>
+          <View style={styles.food}></View> 
+          <Text style={styles.foodText}> Food </Text>
+          <View style={styles.transport}></View> 
+          <Text style={styles.transportText}> Transport </Text>
+          <View style={styles.tech}></View> 
+          <Text style={styles.techText}> Tech </Text>
+          <View style={styles.misc}></View> 
+          <Text style={styles.miscText}> Misc </Text>
           <Text style={styles.whitetext}> {currMonth} Overview: </Text>
           <Text style={styles.whitetext}> ${totalSpent} </Text>
-          <DonutChart style={styles.donutChart} />
+          <DonutChart style={styles.donutChart} props={[foodPercent, transportPercent, techPercent, miscPercent]}/>
         </View>
         <View style={styles.receiptsContainer}>
           <Text style={styles.latestReceipts}> Latest Receipts </Text>
           <FlatList 
             data={sortedReceipts}
             horizontal={false}
-            renderItem={({item}) => <Item businessName={item.businessName} price={item.price} date={item.date}/>}
+            renderItem={({item}) => <Item businessName={item.businessName} price={item.price} date={item.date} category= {item.category}/>}
             keyExtractor={item => item.id}
           />
         </View>
@@ -266,4 +317,60 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
     },
+    food: {
+      width: 20,
+      height: 20,
+      backgroundColor: "#C1E1C1",
+      position: 'absolute', // Position absolutely
+      top: 5, // Flush to the right side
+      right: 80
+    },
+    transport: {
+      width: 20,
+      height: 20,
+      backgroundColor: "#F7C8E0",
+      position: 'absolute', // Position absolutely
+      top: 30, // Flush to the right side
+      right: 80
+    },
+    tech: {
+      width: 20,
+      height: 20,
+      backgroundColor: "#FFFAA0",
+      position: 'absolute', // Position absolutely
+      top: 55, // Flush to the right side
+      right: 80
+    },
+    misc: {
+      width: 20,
+      height: 20,
+      backgroundColor: "#B4E4FF",
+      position: 'absolute', // Position absolutely
+      top: 80, // Flush to the right side
+      right: 80
+    },
+    foodText: {
+      color: "#C1E1C1",
+      position: 'absolute', // Position absolutely
+      top: 5, // Flush to the right side
+      right: 5
+    },
+    transportText: {
+      color: "#F7C8E0",
+      position: 'absolute', // Position absolutely
+      top: 30, // Flush to the right side
+      right: 5
+    },
+    techText: {
+      color: "#FFFAA0",
+      position: 'absolute', // Position absolutely
+      top: 55, // Flush to the right side
+      right: 5
+    },
+    miscText: {
+      color: "#B4E4FF",
+      position: 'absolute', // Position absolutely
+      top: 80, // Flush to the right side
+      right: 5
+    }
 });
