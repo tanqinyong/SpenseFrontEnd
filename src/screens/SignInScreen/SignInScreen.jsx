@@ -97,9 +97,18 @@ export default function SignInScreen({navigation}) {
             resizeMode="contain" 
         />
         
-        <Text>Demo Account:</Text>
-        <Text>Username: tqy4</Text>
-        <Text>Password: password</Text>
+        <View style={styles_account.container}>
+            <View style={styles_account.accountBox}>
+                <Text>User Account:</Text>
+                <Text>Username: tqy4</Text>
+                <Text>Password: password</Text>
+            </View>
+            <View style={styles_account.accountBox}>
+                <Text>Business Account:</Text>
+                <Text>Username: popmart</Text>
+                <Text>Password: password</Text>
+            </View>
+        </View>
         
         {/* <CustomInput placeholder="Username" value={username} setValue={setUsername} secureTextEntry={false}/>
         <CustomInput placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true}/> */}
@@ -116,6 +125,16 @@ export default function SignInScreen({navigation}) {
       </View>
     );
 };
+
+const styles_account = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
+    accountBox: {
+      margin: 10
+    }
+  });
 const stylesFloatButton = StyleSheet.create({
     actionButtonIcon: {
       fontSize: 20,

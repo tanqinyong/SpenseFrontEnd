@@ -212,9 +212,11 @@ export default function HomeScreen({ route, navigation }) {
             >
               <View style={stylesPopUp.modalContainer}>
                 <View style={stylesPopUp.modalContent}>
-                  <QRCode value={userData} size={200} />
+                  <Title style={styles.name}>User QR Code</Title>
+                  <QRCode value={userData} size={300} />
                   <Button
                     title="Close"
+                    style={styles.closeButtonOut}
                     onPress={() => setModalVisible(false)}
                   />
                 </View>
@@ -278,7 +280,9 @@ const styles = StyleSheet.create({
       color: '#00bf63',
       fontSize: 30,
       paddingTop:10,
-
+    },
+    closeButtonOut: {
+      marginTop:10,
     },
     name: {
       color: '#00bf63',

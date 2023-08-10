@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, Image, useWindowDimensions, StyleSheet, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
-
+import Checkbox from 'expo-checkbox';
 
 import CustomInputPaper from '../../components/CustomInputPaper';
 import CustomButton from '../../components/CustomButton';
@@ -14,9 +14,15 @@ export default function SignUpScreen({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
-    const [businessMode, setBusinessMode] = useState('0');
+    const [businessMode, setBusinessMode] = useState('0');  
+    const [checked, setChecked] = useState(false);
+
 
     const onCreateAccPressed = () => {
+        bizcode = 0
+        if (checked) {
+            bizcode = 1
+        }
         fetch('https://spense.azurewebsites.net/signUpRequest', {
         method: 'POST',
         headers: {
@@ -28,7 +34,7 @@ export default function SignUpScreen({navigation}) {
             password: password,
             email: email,
             mobilePhone: phone,
-            businessMode: businessMode
+            businessMode: bizcode
         }),
         })
         .then(function (response) {
@@ -37,6 +43,7 @@ export default function SignUpScreen({navigation}) {
         })
         .then(function (data) {
             alert("Account Created!");
+            navigation.navigate('SignIn');
             console.log("Account Created!");
         } 
         // , function (rejectionReason) { // 3
@@ -66,6 +73,16 @@ export default function SignUpScreen({navigation}) {
         <TextInput style={styles.input} label="Phone" onChangeText={newPhone => setPhone(newPhone)}/>
         <TextInput style={styles.input} label="Password" onChangeText={newPassword => setPassword(newPassword)}/>
         <TextInput style={styles.input} label="Repeat Password"/>
+        <View style={styles.section}>
+            <Checkbox
+            style={styles.checkbox}
+            value={checked}
+            onValueChange={setChecked}
+            color={checked ? '#32CD32' : undefined}
+            />        
+            <Text style={styles.paragraph}>Is this a business account?</Text>
+        </View>
+
         <CustomButton text= "Create Account" onPress={onCreateAccPressed}/>
         <CustomButton text= "I already have an account." onPress={onAlreadyAccPressed} type= "TERTIARY"/>
       </View>
@@ -91,5 +108,15 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginVertical: 5,
+      },
+      section: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      paragraph: {
+        fontSize: 15,
+      },
+      checkbox: {
+        margin: 8,
       },
 });

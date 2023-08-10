@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-const QRScanner = () => {
+const QRScanner = (props) => {
     const [permission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
   
@@ -15,6 +15,9 @@ const QRScanner = () => {
   
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
+      if (props.onScan) {
+        props.onScan(data);
+      }
       alert("Scanned, data is"+data);
     };
   
@@ -38,13 +41,14 @@ const QRScanner = () => {
         {scanned ? (
           <Button title="Scan Again" onPress={startScanning} />
         ) : (
-          <Text style={styles.scanText}>Scan QR Code</Text>
+          <Text style={styles.scanText}>Scan</Text>
         )}
       </View>
     );
   };
   const styles = StyleSheet.create({
-    container: {
+    container: { 
+      width: 400,
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
